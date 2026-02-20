@@ -281,217 +281,43 @@ img {
   flex: 1;
 }
 
-/* Individual cell in the matrix */
-.matrix-item {
-  width: var(--matrix-item-side-length);
-  max-width: var(--matrix-item-max-side-length);
-  justify-self: var(--center-position);
-  transition: 0.6s;
-  transform: scale(1.0);
-}
-
-/* Matrix items grow slightly when hovered on */
-.matrix-item:hover {
-  cursor: pointer;
-  z-index: 100;
-  transition: 0.6s;
-  transform: scale(1.1);
-}
-
-
-
-/**********************************************************************/
-/******************** Popup ********************/
-/**********************************************************************/
-/* Wrapper div that enables popup scrolling on a fixed BG */
-.overlay {
-  position: fixed;
-    top: 0;
-    left: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  width: 100vw;
-  height: 100vh;
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition-property: visibility;
-  transition-duration: 0.6s;
-  transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-}
-
-/* Class to make overlay visible only in popup mode */
-.overlay.visible {
-  visibility: visible;
-  z-index: 100;
-
-  pointer-events: auto;
-
-  transition-property: visibility;
-  transition-duration: 0.6s;
-  transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-}
-
-/* Container for matrix item title, story, images, and URL */
-.matrix-popup {
-  z-index: 100;
-  border: var(--popup-border);
-  background-color: var(--popup-bg-color);
-  border-radius: var(--popup-border-radius);
+/* Single-frame video mode for iPearl custom screen */
+.matrix.ipearl-video-stage {
   display: flex;
-  position: absolute;
-  flex-flow: var(--popup-flex-flow);
-  justify-content: var(--center-position);
-  align-items: var(--center-position);
-  width: var(--popup-width);
-  height: var(--popup-height);
-  min-height: var(--popup-min-height);
-  max-width: var(--popup-max-width);
-  box-shadow: var(--popup-shadow);
-
-  left: var(--popup-left-position);
-  top: var(--popup-top-position);
-  transform: var(--popup-transform);
-
-  pointer-events: none;
-  opacity: 0;
-
-  transition-property: opacity;
-  transition-duration: 0.6s;
-  transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-
-  // TODO create a variable for this?
-  margin-bottom: 25px;
-}
-
-/* Class to fade matrix-popup in/out */
-.matrix-popup.visible {
-  pointer-events: auto;
-  opacity: 1;
-
-  transition-property: opacity;
-  transition-duration: 0.6s;
-  transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-}
-
-/* Buttons for changing projects in a popup and closing a popup */
-.popup-button {
-  color: var(--text-color);
-  background-color: rgba(0, 0, 0, 0); // Should have no BG
-  font-family: var(--paragraph-font-family);
-  font-size: calc(var(--popup-story-size) * 2.5);
-  display: var(--popup-button-display);
-  position: absolute;
-  transition: .4s;
-  transform: scale(1.0);
-}
-
-/* Hover state for popup buttons */
-.popup-button:hover {
-  cursor: pointer;
-  color: var(--button-color-hover);
-  transition: .4s;
-  font-size: calc(var(--popup-story-size) * 2.75);
-}
-
-/* Button to go to prev project in popup */
-#prev-button {
-  left: 0px;
-  padding: 0px 15px; // Increase clickable area
-  margin: 0px -15px;
-  transform: var(--popup-prev-button-transform);
-}
-
-/* Button to go to next project in popup */
-#next-button {
-  right: 0px;
-  padding: 0px 15px; // Increase clickable area
-  margin: 0px -15px;
-  transform: var(--popup-next-button-transform);
-}
-
-/* Button to close popup in interactive display */
-#close-button {
-  border-width: 0;
-  right: 45px;
-  top: 30px;
-  padding: 0px 15px; // Increase clickable area
-  margin: 0px -15px;
-  transform: translateY(-55%) translateX(55%);
-}
-
-/* Area of matrix popup containing primary image and secondary images */
-.popup-img-area {
-  padding: var(--popup-img-inner-padding);
-  justify-self: var(--center-position);
-  align-self: var(--center-position);
-  display: flex;
-  flex-flow: var(--popup-img-flex-flow);
-  align-items: var(--center-position);
-  box-sizing: border-box;
-  width: var(--popup-img-area-width);
-  height: var(--popup-img-area-height);
+  align-items: center;
   justify-content: center;
-}
-
-/* The main (and largest) image of a matrix item */
-#primary-popup-img {
-  width: var(--popup-primary-img-width);
-  height: var(--popup-primary-img-height);
-  max-width: var(--popup-primary-img-max-width);
-  max-height: var(--popup-primary-img-max-height);
-}
-
-/* Container for all the secondary images of a matrix item */
-.secondary-img-slides {
-  padding: var(--popup-img-primary-secondary-gap);
+  padding: 48px 64px;
   box-sizing: border-box;
+}
+
+.ipearl-video-frame {
+  width: fit-content;
+  height: fit-content;
+  max-width: 100%;
+  max-height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   display: flex;
-  flex-flow: var(--popup-secondary-img-flex-flow);
-  align-items: var(--center-position);
-  justify-content: space-evenly;
-  width: var(--popup-secondary-img-slides-width);
-  height: var(--popup-secondary-img-slides-height);
 }
 
-/* Class for a single secondary image */
-.secondary-img {
-  width: var(--popup-secondary-img-width);
-  height: var(--popup-secondary-img-height);
-  max-width: var(--popup-secondary-img-max-width);
-  max-height: var(--popup-secondary-img-max-height);
-  cursor: pointer;
-  transition: .25s;
-  transform: scale(1.0);
+.ipearl-video {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  background: transparent;
 }
 
-// TODO fix this - scaling causes popup to shift slightly
-/* Hover state for secondary-img */
-.secondary-img:hover {
-  transition: .25s;
-  transform: scale(1.1);
+.main-url-list {
+  margin: 12px 0 0;
+  padding-left: 20px;
 }
 
-/* Area of matrix popup containing item title, story, and URL */
-.popup-txt-area {
-  padding: var(--popup-txt-inner-padding);
-  align-self: var(--center-position);
-  justify-self: var(--center-position);
-  box-sizing: border-box;
-  width: var(--popup-txt-area-width);
-  height: var(--popup-txt-area-height);
-}
-
-/* Title of the selected matrix item */
-.project-title {
-  font-size: var(--popup-title-size);
-  margin: var(--popup-heading-margin);
-}
-
-/* "Story"/explanation of the selected matrix item */
-.project-story {
-  font-size: var(--popup-story-size);
+.main-url-list li {
+  margin: 8px 0;
 }
 
 
@@ -1290,6 +1116,15 @@ img {
     position: relative;
     top: 7.5%;
   }
+
+  .matrix.ipearl-video-stage {
+    padding: 64px 96px;
+  }
+
+  .ipearl-video-frame {
+    border-radius: 0;
+    border-width: 6px 0;
+  }
 }
 
 /*
@@ -1346,56 +1181,6 @@ img {
       left: 610.84px;
     width: 406px;
     box-sizing: border-box;
-  }
-
-  .overlay {
-    display: flex;
-    align-items: center;
-  }
-
-  .matrix-popup {
-    height: 80vh;
-    position: static;
-    margin-bottom: 0;
-    border-width: 6px 0px 6px 0px;
-    margin-left: 197px;
-    padding: 32px;
-    box-sizing: border-box;
-    display: block;
-  }
-
-  .popup-txt-area {
-    position: absolute;
-      left: calc(610px + 32px);
-      top: 410px;
-  }
-
-  .secondary-img-slides {
-    position: absolute;
-      left: 569px;
-      top: 0;
-  }
-
-  .popup-img-area {
-    position: absolute;
-      left: calc(610px + 32px);
-    display: block;
-  }
-
-  .pattern {
-    width: 203px;
-    height: calc(100% - 64px);
-    position: absolute;
-    background-position: center;
-    background-size: 1200px;
-  }
-
-  #pattern-1 {
-    left: 0;
-  }
-
-  #pattern-2 {
-    right: 0;
   }
 
   .imm-sch-url-container {
