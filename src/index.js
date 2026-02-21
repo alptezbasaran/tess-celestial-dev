@@ -2,6 +2,9 @@ import "./style.scss";
 import { geoAlbersUsa, geoPath } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import counties10m from "us-atlas/counties-10m.json";
+import getDataHelpQrUrl from "./assets/getdatahelp-qr.svg";
+import libLogoUrl from "./assets/lib_logo_black_white_v2.svg";
+import landcoverVideoUrl from "./assets/landcover_alternating.mp4";
 
 const ipearlVideoConfig = {
   title: "Get Map Help!",
@@ -16,12 +19,12 @@ const ipearlVideoConfig = {
   descriptionOutro:
     "Data Science Services can answer questions and help you with data science topics.",
   descriptionContact: "Contact Us for Data Help",
-  qrPath: "./assets/getdatahelp-qr.svg",
+  qrUrl: getDataHelpQrUrl,
   qrAlt: "Get Data Help QR code",
-  logoPath: "./assets/lib_logo_black_white_v2.svg",
+  logoUrlAsset: libLogoUrl,
   logoAlt: "NC State University Libraries",
   logoUrl: "https://www.lib.ncsu.edu/",
-  videoPath: "./assets/landcover_alternating.mp4",
+  videoPath: landcoverVideoUrl,
 };
 
 const getNcGeometries = function () {
@@ -162,11 +165,11 @@ const renderIpearlVideoScreen = function () {
 
   mainUrl.innerHTML = `
     <div class="sidebar-qr-row">
-      <img class="sidebar-qr" src="${new URL(ipearlVideoConfig.qrPath, import.meta.url).href}" alt="${ipearlVideoConfig.qrAlt}" />
+      <img class="sidebar-qr" src="${ipearlVideoConfig.qrUrl}" alt="${ipearlVideoConfig.qrAlt}" />
       <a class="sidebar-qr-link" href="https://go.ncsu.edu/getdatahelp" target="_blank" rel="noopener noreferrer">go.ncsu.edu/getdatahelp</a>
     </div>
     <a class="sidebar-logo-link" href="${ipearlVideoConfig.logoUrl}" target="_blank" rel="noopener noreferrer">
-      <img class="sidebar-logo" src="${new URL(ipearlVideoConfig.logoPath, import.meta.url).href}" alt="${ipearlVideoConfig.logoAlt}" />
+      <img class="sidebar-logo" src="${ipearlVideoConfig.logoUrlAsset}" alt="${ipearlVideoConfig.logoAlt}" />
     </a>
   `;
 
@@ -174,7 +177,7 @@ const renderIpearlVideoScreen = function () {
   frame.className = "ipearl-video-frame";
   const video = document.createElement("video");
   video.className = "ipearl-video";
-  video.src = new URL(ipearlVideoConfig.videoPath, import.meta.url).href;
+  video.src = ipearlVideoConfig.videoPath;
   video.autoplay = true;
   video.loop = true;
   video.muted = true;
