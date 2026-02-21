@@ -169,7 +169,9 @@ body {
 /* Static full-height layout: video pane + sidebar only */
 .main-container.video-only-layout {
   grid-template-areas: "matrix main-txt";
+  grid-template-columns: minmax(0, 1fr) clamp(360px, 30vw, 560px);
   grid-template-rows: 100vh;
+  position: relative;
 }
 
 /* Clips the main-container when zoomed in and popup is displayed */
@@ -239,10 +241,45 @@ img {
 
 .main-container.video-only-layout .main-txt {
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: var(--video-vertical-gap) 75px;
+  justify-content: flex-start;
+  padding: calc(var(--video-vertical-gap) + 8px) clamp(28px, 2.8vw, 75px);
+  box-sizing: border-box;
+  background: transparent;
+  position: relative;
+  z-index: 4;
+}
+
+.main-container.video-only-layout .main-txt::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--video-vertical-gap);
+  bottom: var(--video-vertical-gap);
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.main-container.video-only-layout .main-txt > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.sidebar-header .main-title,
+.sidebar-header .researcher-name,
+.sidebar-header .main-desc {
+  margin: 0;
 }
 
 /* Title of the researcher's collection of work */
@@ -268,6 +305,44 @@ img {
   margin: var(--main-desc-margin);
 }
 
+.main-desc-intro {
+  margin: 0;
+}
+
+.main-desc-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-desc-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.main-desc-list li::before {
+  content: "";
+  width: 0.9em;
+  height: 0.9em;
+  flex: 0 0 0.9em;
+  background-color: #ffffff;
+  -webkit-mask: center / contain no-repeat url("./assets/wolf-head.svg");
+  mask: center / contain no-repeat url("./assets/wolf-head.svg");
+  transform: translateY(0.04em) scaleX(-1);
+}
+
+.main-desc-outro {
+  margin: 14px 0 0;
+}
+
+.main-desc-contact {
+  margin: 14px 0 0;
+  font-size: 1.15em;
+  font-weight: 700;
+}
+
 /* Actual URL to the collection */
 .main-url {
   font-size: var(--main-link-size);
@@ -275,7 +350,13 @@ img {
 }
 
 .main-container.video-only-layout .main-url {
-  margin-top: auto;
+  margin: clamp(20px, 2.8vh, 44px) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  font-size: clamp(13px, 1.02vw, 20px);
+  padding-bottom: 8px;
 }
 
 
@@ -303,6 +384,9 @@ img {
 
 .main-container.video-only-layout .matrix {
   height: 100vh;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 /* Single-frame video mode for iPearl custom screen */
@@ -312,7 +396,7 @@ img {
   justify-content: center;
   padding: 0;
   box-sizing: border-box;
-  background: #cc0000;
+  background: #000000;
 }
 
 .ipearl-video-frame {
@@ -320,6 +404,8 @@ img {
   height: 100%;
   display: flex;
   overflow: hidden;
+  position: relative;
+  z-index: 3;
 }
 
 .ipearl-video {
@@ -328,31 +414,97 @@ img {
   object-fit: contain;
   object-position: center;
   display: block;
-  background: #cc0000;
+  background: #000000;
+}
+
+.nc-bar-art-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.nc-bar-art-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.nc-bar-art-band.top {
+  top: 0;
+}
+
+.nc-bar-art-band.bottom {
+  bottom: 0;
+}
+
+.nc-bar-art-band svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .main-url-list {
-  margin: 12px 0 0;
-  padding-left: 20px;
+  margin: 0;
+  padding-left: 18px;
 }
 
 .main-url-list li {
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
-.sidebar-brand {
-  margin-bottom: 20px;
-}
-
-.sidebar-brand-link {
+.sidebar-logo-link {
   display: inline-block;
+  margin-top: 10px;
 }
 
-.sidebar-brand-logo {
-  width: 240px;
+.sidebar-qr {
+  width: clamp(56px, 5.6vw, 96px);
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+.sidebar-qr-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-qr-link {
+  font-size: clamp(13px, 1.05vw, 18px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.sidebar-logo {
+  width: clamp(150px, 14vw, 240px);
+  max-width: 100%;
+  height: auto;
+  display: block;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.main-container.video-only-layout .main-title {
+  font-size: clamp(40px, 3.3vw, 76px);
+  line-height: 1.03;
+}
+
+.main-container.video-only-layout .researcher-name {
+  font-size: clamp(20px, 1.42vw, 30px);
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+.main-container.video-only-layout .main-desc {
+  font-size: clamp(18px, 1.26vw, 28px);
+  line-height: 1.35;
 }
 
 
