@@ -8,13 +8,14 @@ import landcoverVideoUrl from "./assets/landcover_alternating.mp4";
 
 const ipearlVideoConfig = {
   title: "Get Map Help!",
-  researcherName: "North Carolina Is Urbanizing",
+  researcherName: `How do you quantify land cover change?
+The NCLD is available from 1985 to 2024`,
   descriptionIntro: "Do you need help with",
   descriptionItems: [
-    "Mapping,",
-    "Finding spatiotemporal data,",
-    "Geospatial analysis,",
-    "GIS projects,",
+    "Mapping",
+    "Finding spatiotemporal data",
+    "Geospatial analysis",
+    "GIS projects",
   ],
   descriptionOutro:
     "Data Science Services can answer questions and help you with data science topics.",
@@ -110,7 +111,13 @@ const createNcBarArtSvg = function (width, height, variant = "top") {
   };
 
   // Overscale, then repeat across the width so bars are fully covered.
-  const xOffsets = [-0.8 * width, -0.4 * width, 0, 0.4 * width, 0.8 * width];
+  // Add more repetitions on wide bands for denser mesh on large screens.
+  const baseOffsets = [-0.8 * width, -0.4 * width, 0, 0.4 * width, 0.8 * width];
+  const extraOffsets =
+    width > 2000
+      ? [-1.2 * width, -0.6 * width, 0.6 * width, 1.2 * width]
+      : [];
+  const xOffsets = [...baseOffsets, ...extraOffsets];
   xOffsets.forEach((xOffset) => {
     appendMeshLayer(
       `translate(${cx + xOffset} ${cy}) rotate(${rotation}) scale(2.15) translate(${-cx} ${-cy})`,
@@ -129,6 +136,10 @@ const createNcBarArtSvg = function (width, height, variant = "top") {
 };
 
 const renderIpearlVideoScreen = function () {
+  const searchParams = new URLSearchParams(window.location.search);
+  const isPreviewKiosk = searchParams.get("previewKiosk") === "1";
+  document.body.classList.toggle("preview-kiosk", isPreviewKiosk);
+
   const mainContainer = document.querySelector(".main-container");
   const matrix = document.querySelector(".matrix");
   const mainTitle = document.querySelector(".main-title");
@@ -194,7 +205,6 @@ const renderIpearlVideoScreen = function () {
   barArtLayer.appendChild(bottomBarArt);
 
   const renderBarArt = function () {
-    const width = Math.round(mainContainer.clientWidth);
     const matrixWidth = Math.round(matrix.clientWidth);
     const height = Math.round(matrix.clientHeight);
     const videoRatio =
@@ -202,22 +212,27 @@ const renderIpearlVideoScreen = function () {
         ? video.videoWidth / video.videoHeight
         : 16 / 9;
 
-    if (!width || !matrixWidth || !height || !videoRatio) {
+    if (!matrixWidth || !height || !videoRatio) {
       return;
     }
 
     const contentHeight = Math.min(height, matrixWidth / videoRatio);
-    const barHeight = Math.max(0, Math.floor((height - contentHeight) / 2));
-    if (barHeight < 24) {
-      topBarArt.replaceChildren();
-      bottomBarArt.replaceChildren();
-      return;
-    }
+    const naturalBarHeight = Math.max(0, Math.floor((height - contentHeight) / 2));
+    // On ultra-wide screens, videos can be side-letterboxed (no top/bottom gap).
+    // Keep decorative bands visible with a bounded fallback height.
+    const fallbackBarHeight = Math.round(height * 0.16);
+    const barHeightCap = height > 800 ? 200 : 120;
+    const barHeight =
+      naturalBarHeight >= 24
+        ? naturalBarHeight
+        : Math.min(barHeightCap, Math.max(32, fallbackBarHeight));
 
     topBarArt.style.height = `${barHeight}px`;
     bottomBarArt.style.height = `${barHeight}px`;
-    topBarArt.replaceChildren(createNcBarArtSvg(width, barHeight, "top"));
-    bottomBarArt.replaceChildren(createNcBarArtSvg(width, barHeight, "bottom"));
+    topBarArt.replaceChildren(createNcBarArtSvg(matrixWidth, barHeight, "top"));
+    bottomBarArt.replaceChildren(
+      createNcBarArtSvg(matrixWidth, barHeight, "bottom")
+    );
   };
 
   video.addEventListener("loadedmetadata", renderBarArt);
@@ -225,7 +240,7 @@ const renderIpearlVideoScreen = function () {
 
   frame.appendChild(video);
   matrix.replaceChildren(frame);
-  mainContainer.appendChild(barArtLayer);
+  matrix.appendChild(barArtLayer);
   renderBarArt();
 };
 

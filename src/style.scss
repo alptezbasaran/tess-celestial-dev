@@ -405,7 +405,7 @@ img {
   display: flex;
   overflow: hidden;
   position: relative;
-  z-index: 3;
+  z-index: 2;
 }
 
 .ipearl-video {
@@ -421,7 +421,7 @@ img {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .nc-bar-art-band {
@@ -505,6 +505,27 @@ img {
 .main-container.video-only-layout .main-desc {
   font-size: clamp(18px, 1.26vw, 28px);
   line-height: 1.35;
+}
+
+/* Local testing aid: use ?previewKiosk=1 to scale sidebar on regular monitors. */
+body.preview-kiosk .main-container.video-only-layout {
+  grid-template-columns: minmax(0, 1fr) clamp(420px, 36vw, 720px);
+}
+
+body.preview-kiosk .main-container.video-only-layout .main-title {
+  font-size: clamp(48px, 3.9vw, 92px);
+}
+
+body.preview-kiosk .main-container.video-only-layout .researcher-name {
+  font-size: clamp(24px, 1.9vw, 40px);
+}
+
+body.preview-kiosk .main-container.video-only-layout .main-desc {
+  font-size: clamp(22px, 1.55vw, 34px);
+}
+
+body.preview-kiosk .main-container.video-only-layout .main-url {
+  font-size: clamp(15px, 1.2vw, 24px);
 }
 
 
