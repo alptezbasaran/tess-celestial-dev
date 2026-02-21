@@ -464,12 +464,14 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+  flex-shrink: 0;
 }
 
 .sidebar-qr-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .sidebar-qr-link {
@@ -498,7 +500,7 @@ img {
 .main-container.video-only-layout .researcher-name {
   font-size: clamp(20px, 1.42vw, 30px);
   font-weight: 600;
-  white-space: nowrap;
+  white-space: pre-line;
   line-height: 1.1;
 }
 

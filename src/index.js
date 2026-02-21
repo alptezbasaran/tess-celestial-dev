@@ -9,6 +9,7 @@ import landcoverVideoUrl from "./assets/landcover_alternating.mp4";
 const ipearlVideoConfig = {
   title: "Get Map Help!",
   researcherName: `How do you quantify land cover change?
+
 The NCLD is available from 1985 to 2024`,
   descriptionIntro: "Do you need help with",
   descriptionItems: [
