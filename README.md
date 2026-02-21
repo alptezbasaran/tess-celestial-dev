@@ -1,6 +1,6 @@
 # Tess-celestial
 
-> Immersive Scholar Local Resident Radmila Sazdanović
+> iPearl landcover timeline display
 
 ## Quick start
 

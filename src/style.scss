@@ -33,6 +33,8 @@
   --horizontal-center-margins: 0; // For horizontally centering
   --left-col-width: calc(100vw - 1100px);
   --right-col-width: 1100px;
+  --video-content-height: min(100vh, calc(var(--left-col-width) * 9 / 16));
+  --video-vertical-gap: max(0px, calc((100vh - var(--video-content-height)) / 2));
   --top-row-height: 85.714vh; // 6/7
   --middle-row-height: 0vh; // 0/7
   --bottom-row-height: 14.286vh; // 1/7
@@ -164,6 +166,12 @@ body {
   flex-flow: column nowrap;
 }
 
+/* Static full-height layout: video pane + sidebar only */
+.main-container.video-only-layout {
+  grid-template-areas: "matrix main-txt";
+  grid-template-rows: 100vh;
+}
+
 /* Clips the main-container when zoomed in and popup is displayed */
 .main-container.clipped {
   overflow: hidden;
@@ -210,7 +218,7 @@ img {
 /**********************************************************************/
 /*
  * Container for main (collection) title, researcher name,
- * description, and Immersive Scholar logo
+ * description, and supporting project links
  */
 .main-txt {
   height: var(--main-txt-height);
@@ -227,6 +235,14 @@ img {
 
   // Flex properties
   order: 2;
+}
+
+.main-container.video-only-layout .main-txt {
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  padding: var(--video-vertical-gap) 75px;
 }
 
 /* Title of the researcher's collection of work */
@@ -258,6 +274,10 @@ img {
   grid-area: url;
 }
 
+.main-container.video-only-layout .main-url {
+  margin-top: auto;
+}
+
 
 /**********************************************************************/
 /******************** Matrix ********************/
@@ -281,34 +301,34 @@ img {
   flex: 1;
 }
 
+.main-container.video-only-layout .matrix {
+  height: 100vh;
+}
+
 /* Single-frame video mode for iPearl custom screen */
 .matrix.ipearl-video-stage {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 64px;
+  padding: 0;
   box-sizing: border-box;
+  background: #cc0000;
 }
 
 .ipearl-video-frame {
-  width: fit-content;
-  height: fit-content;
-  max-width: 100%;
-  max-height: 100%;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
+  width: 100%;
+  height: 100%;
   display: flex;
+  overflow: hidden;
 }
 
 .ipearl-video {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
   display: block;
-  background: transparent;
+  background: #cc0000;
 }
 
 .main-url-list {
@@ -320,11 +340,26 @@ img {
   margin: 8px 0;
 }
 
+.sidebar-brand {
+  margin-bottom: 20px;
+}
+
+.sidebar-brand-link {
+  display: inline-block;
+}
+
+.sidebar-brand-logo {
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 
 /**********************************************************************/
-/******************** Immersive Scholar URL ********************/
+/******************** Legacy footer link area ********************/
 /**********************************************************************/
-/* Container for the URL to the Immersion Scholar project website */
+/* Legacy footer container (unused in video-only layout) */
 .imm-sch-url-container {
   grid-area: link;
   align-self: var(--imm-sch-url-vertical-align);
@@ -344,14 +379,14 @@ img {
   order: 3;
 }
 
-/* Immersive Scholar logo */
+/* Legacy footer logo (unused in video-only layout) */
 #logo {
   max-height: var(--max-logo-height);
   display: var(--logo-display);
   margin-right: 15px;
 }
 
-/* URL for the Immersive Scholar project that appears outside of .main-txt */
+/* Legacy footer URL text (unused in video-only layout) */
 .imm-sch-url {
   font-size: var(--imm-sch-url-size);
   display: var(--imm-sch-url-display);
@@ -1118,12 +1153,7 @@ img {
   }
 
   .matrix.ipearl-video-stage {
-    padding: 64px 96px;
-  }
-
-  .ipearl-video-frame {
-    border-radius: 0;
-    border-width: 6px 0;
+    padding: 0;
   }
 }
 
